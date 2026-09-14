@@ -48,7 +48,12 @@ def health():
         "status": "healthy"
     }
 
-
+@app.get("/debug/database")
+def debug_database(db: Session = Depends(get_db)):
+    return {
+        "services": db.query(Service).count(),
+        "workers": db.query(Worker).count()
+    }
 @app.get("/services")
 def get_services(db: Session = Depends(get_db)):
     services = db.query(Service).all()
